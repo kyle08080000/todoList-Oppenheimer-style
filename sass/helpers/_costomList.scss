@@ -1,0 +1,273 @@
+body {
+    background: #2B1212;
+    color: #fff;
+}
+
+h1, span {
+    color: #F6B24C;
+}
+
+a {
+    // color: #AABFDA;
+}
+
+::placeholder { /* 選擇所有的 placeholder */
+    color: $mybtn !important;
+}
+
+.form-check-input:checked{
+    background-color: $checked;
+}
+
+.card {
+    background-color: #F6B24C;
+
+    .nav-tabs > a {
+        color: #E07763;
+        border-bottom: 0;
+
+        &.active {
+            background-color: $mynav-tabs;
+            color: #F6B24C;
+        }
+    }
+
+    .Badges-Category{
+        // left: 60px;
+    }
+    .Badges-completed{
+        // left: 160px;
+    }
+    .Badges-undone{
+        // right: 70px;
+    }
+}
+
+
+.addModal {
+    color: #E07763;
+}
+
+.modal-content{
+    background-color: $mymodal;
+    .modal-header{
+        .modal-title{
+            color: #F6B24C;
+            .fa-atom{
+                color: #F6B24C;
+            }
+        }
+    }
+    .modal-footer{
+        .modal-btn-close{
+            background-color: #F6B24C;
+            border: 0;
+            color: #E07763;
+        }
+        .store{
+            background-color: #6E1610;
+            border: 0;
+            color: #F6B24C;
+        }
+    }
+}
+
+.pending-count {
+    color: #5C1010;
+}
+
+.card-body{
+    padding: 0;
+}
+.item-list{
+    // border-left: 1px solid #fff;
+    // border-right: 1px solid #fff;
+    // border-bottom: 1px solid #fff;
+
+    .list-group-item {
+        background-color: #6E1610;
+        .task-name {
+            color: #F6B24C;
+        }
+    
+        .trash {
+            color: #D15628;
+    
+            &:hover {
+                color: red;
+            }
+        }
+    }
+}
+
+// 刪除線
+.task-name {
+    display: inline-block;
+    position: relative;
+    transition: color 0.3s;
+    &.striked {
+        color: #E07763 !important;
+        // color: rgba(0, 0, 0, 0.5) !important;
+    }
+
+    &.striked::before,
+    &.unstriked::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        height: 1px;
+        background: #F6B24C;
+        // background: rgba(0, 0, 0, 0.5);
+    }
+
+    &.striked::before {
+        animation: strikeThrough 0.3s forwards;
+    }
+
+    &.unstriked::before {
+        animation: unstrike 0.3s forwards;
+    }
+}
+
+.Toast {
+    background-color: $mytoast;
+    .toast-div{
+        background-color: $mytoast;
+    }
+    .toast-body {
+        background-color: $mytoast;
+        color: #F6B24C;
+    }
+}
+
+
+
+@keyframes strikeThrough {
+    0% {
+        width: 0;
+    }
+
+    100% {
+        width: 100%;
+    }
+}
+
+@keyframes unstrike {
+    0% {
+        width: 100%;
+    }
+
+    100% {
+        width: 0;
+    }
+}
+
+// 漢堡選單
+.navbar-toggler {
+    position: absolute;
+    top: 2.5rem;
+    right: 1rem;
+    border: 0;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    background-color: $mybar;
+    .fa-radiation-alt {
+        color: #5C1010;
+    }
+}
+
+.nav {
+    border-bottom: 1px solid $gray-300;
+
+    &-link {
+        color: $secondary;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+}
+
+.offcanvas{
+    background-color: $myoffcanvas;
+    color: #481F1E;
+}
+.search-btn{
+    background-color: #D15628;
+    .fa-search{
+        color: #481F1E;
+    }
+}
+
+.bar-nav-link {
+    color: #6E1610 !important;
+    &.active{
+        color: #D15628 !important;
+    }
+}
+
+.bi-window-plus {
+    font-size: 1.5rem;
+}
+
+.clear {
+    color: $gray-500;
+    text-decoration: none;
+}
+
+// 排序按紐
+.form-check.form-switch {
+    display: flex;
+    .form-check-input:checked {
+        background-color: $myswitchBtn;
+        order: 2;
+    }
+}
+
+input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.newitem{
+    border: 1.5px solid $myInput;
+    &::-webkit-input-placeholder { /* WebKit 瀏覽器 */
+        color: $mybtn;
+    }
+}
+
+.addButton {
+    border: 1.5px solid $myaddBtn;
+    background-color: $myaddBtn;
+    color: #E07763;
+    &:hover{
+        background-color: #D15628;
+    }
+}
+.dropdown-btn{
+    border-top: 1.5px solid $myaddBtn;
+    border-bottom: 1.5px solid  $myaddBtn;
+    background-color: $mystoreBtn;
+    color: #F6B24C;
+    &:hover{
+        background-color: $mystoreBtn;
+    }
+}
+// 下拉選單
+.category-menu{
+    background-color: #D15628;
+    & > li > a{
+        color: #F6B24C;
+        &.active{
+            background-color: #F6B24C;
+            color: #6E1610;
+        }
+    }
+}
+
+// 提示匡
+.popover-btn{
+    right: 55px;
+    border-color: $mytoast;
+}
+
