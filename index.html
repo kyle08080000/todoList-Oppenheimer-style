@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="sass/all.css">
+    <link rel="stylesheet" href="css/all.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <title>todo list</title>
 </head>
-<style>
 
-</style>
 <body>
     <div class="container">
 
@@ -46,11 +44,12 @@
             </div>
         </nav>
 
-        
+        <!-- 主要內容 -->
         <div class="row">
             <div class="col-md-6 col-lg-5 mx-auto">
+
+                <!-- 標題 -->
                 <div class="title mt-4 mb-3 text-center">
-                    <!-- 標題 -->
                     <h1 class="fw-bold">
                         <i class="fas fa-atom"></i>
                         <span style="color: #D15628;">TODO</span>
@@ -59,20 +58,18 @@
                     <span class="fs-6">Get things done, one item at a time.</span>
                 </div>
 
+                <!-- 卡片主要內容 -->
                 <div class="card shadow">
                     <!-- 卡片導航欄 -->
                     <nav class="nav nav-tabs flex-nowrap text-center fw-bold">
-                        <a class="Category nav-link position-relative px-2 flex-fill overflow-auto text-nowrap active" aria-current="page" href="#">
+                        <a class="Category nav-link card-nav-link position-relative px-2 flex-fill overflow-auto text-nowrap active" aria-current="page" href="#">
                             全部
-
                         </a>
-                        <a class="nav-link position-relative px-2 flex-fill overflow-auto text-nowrap" href="#">
+                        <a class="nav-link card-nav-link position-relative px-2 flex-fill overflow-auto text-nowrap" href="#">
                             已完成
-
                         </a>                         
-                        <a class="nav-link  position-relative px-2 flex-fill text-nowrap" href="#">
+                        <a class="nav-link card-nav-link position-relative px-2 flex-fill text-nowrap" href="#">
                             未完成
-
                         </a>
             <!-- 新增分類模組按鈕 -->
                         <button type="button" class="btn addModal px-3 py-0" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -100,9 +97,8 @@
                             </div>
                         </div>
                     </nav>
-
                     <div class="card-body">
-                        <!-- 待辦列表 -->
+                        <!-- 待辦列表項目 -->
                         <div class="overflow-auto item-list">
                             <ul class="list-group" style="height: 290px;">
         
@@ -137,18 +133,17 @@
                             <div class="col-10 mx-auto">
                                 <div class="input-group text-center my-3 position-relative">
                                         <input type="text" class="form-control newitem" placeholder="請輸入待辦事項" aria-label="Recipient's username" aria-describedby="button-addon2">
-    
                                         <button class="btn dropdown-btn " type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="fas fa-flask"></i>
                                         </button>
                                         <button class="popover-btn position-absolute invisible" data-bs-placement="top" data-bs-content="Top popover"></button>
-    
+                                        <!-- 下拉選單 -->
                                         <ul class="row category-menu dropdown-menu dropdown-menu-end" style="width: 100px;">
                                             <li><a class="dropdown-modal dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">新增分類？</a></li>
                                             <li><hr class="dropdown-divider"></li>
                                             <li><a class="dropdown-item active" href="#">全部</a></li>
                                         </ul>
-    
+                                    <!-- 送出按鈕 -->
                                     <button class="btn  addButton" type="submit" id="button-addon2">
                                         <i class="bi bi-arrow-right"></i>
                                     </button>
