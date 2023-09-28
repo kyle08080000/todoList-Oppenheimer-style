@@ -1,6 +1,8 @@
 // Variables
 //
 // kyle
+$underline: #F6B24C; // login輸入匡底線、文字
+$login_float: #D15628;
 $checked: #F6B24C;
 $mybar: #F6B24C;
 $mynav-tabs: #D15628;
@@ -920,10 +922,10 @@ $input-disabled-color:                  null !default;
 $input-disabled-bg:                     var(--#{$prefix}secondary-bg) !default;
 $input-disabled-border-color:           null !default;
 
-$input-color:                           var(--#{$prefix}body-color) !default;
+$input-color:                           $underline;//var(--#{$prefix}body-color) !default; //kyle
 $input-border-color:                    var(--#{$prefix}border-color) !default;
 $input-border-width:                    $input-btn-border-width !default;
-$input-box-shadow:                      $box-shadow-inset !default;
+$input-box-shadow:                      $box-shadow-inset !default; 
 
 $input-border-radius:                   var(--#{$prefix}border-radius) !default;
 $input-border-radius-sm:                var(--#{$prefix}border-radius-sm) !default;
@@ -933,7 +935,7 @@ $input-focus-bg:                        $input-bg !default;
 $input-focus-border-color:              tint-color($component-active-bg, 50%) !default;
 $input-focus-color:                     $input-color !default;
 $input-focus-width:                     0;//$input-btn-focus-width !default;
-$input-focus-box-shadow:                $input-btn-focus-box-shadow !default;
+$input-focus-box-shadow:                none;//$input-btn-focus-box-shadow !default; //kyle
 
 $input-placeholder-color:               var(--#{$prefix}secondary-color) !default;
 $input-plaintext-color:                 var(--#{$prefix}body-color) !default;
@@ -1095,7 +1097,7 @@ $form-floating-input-padding-b:         .625rem !default;
 $form-floating-label-height:            1.5em !default;
 $form-floating-label-opacity:           .65 !default;
 $form-floating-label-transform:         scale(.85) translateY(-.5rem) translateX(.15rem) !default;
-$form-floating-label-disabled-color:    $gray-600 !default;
+$form-floating-label-disabled-color:    $underline;//$gray-600 !default; //kyle
 $form-floating-transition:              opacity .1s ease-in-out, transform .1s ease-in-out !default;
 // scss-docs-end form-floating-variables
 
