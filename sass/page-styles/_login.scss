@@ -3,7 +3,7 @@ a{
     text-decoration: none;
 }
 
-.login-input::placeholder{
+.init-input::placeholder{
     opacity: 0;
 }
 
@@ -31,7 +31,7 @@ a{
 .form-floating > .form-control-plaintext ~ label,
 .form-floating > .form-select ~ label {
     // background-color: transparent;
-    color: $login_float;  /* 浮動時標籤顯示顏色 */
+    color: $gray-400;  /* 浮動時標籤顯示顏色 */
 }
 
 // 登入按鈕
