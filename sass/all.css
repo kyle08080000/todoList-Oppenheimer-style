@@ -14786,11 +14786,6 @@ a {
   opacity: 0;
 }
 
-.text-spacing {
-  letter-spacing: 0.6rem;
-  margin-right: -0.6rem;
-}
-
 .form-control, .form-control:focus {
   background-color: transparent;
   border: none;

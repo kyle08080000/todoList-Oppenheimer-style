@@ -11,9 +11,11 @@
 <body>
     <div class="container">
         <div class="row mt-5">
-            <div class="col-12 ms-2 text-center">
-                <h1>LOGIN</h1>
-                <p class="text-spacing">TO CONTINUE</p>
+            <div class="col-12 ">
+                <div class="text-center ms-2">
+                    <h1>Login</h1>
+                    <p class="text-spacing">TO CONTINUE</p>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -73,28 +75,6 @@
             </div>
         </div>
     </div>
-    <script>
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
-        (function () {
-        'use strict'
-
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        var forms = document.querySelectorAll('.needs-validation')
-
-        // Loop over them and prevent submission
-        Array.prototype.slice.call(forms)
-            .forEach(function (form) {
-            form.addEventListener('submit', function (event) {
-                if (!form.checkValidity()) {
-                event.preventDefault()
-                event.stopPropagation()
-                }
-
-                form.classList.add('was-validated')
-            }, false)
-            })
-        })()
-    </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

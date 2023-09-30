@@ -48,6 +48,7 @@ async function logIn(email,password){
                 icon: 'success',
                 title: '登入成功',
                 text: '準備進入...',
+                showConfirmButton: false,  // 这行代码将移除确认按钮
                 timer: 1500,  // 可选: 这行代码将在1.5秒后自动关闭弹窗
                 timerProgressBar: true,  // 显示倒计时进度条
                 didClose: () => {  // 当弹窗关闭时执行的函数
