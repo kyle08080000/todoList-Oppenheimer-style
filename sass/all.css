@@ -14624,6 +14624,10 @@ a {
   margin-right: -0.6rem;
 }
 
+.moviePoster {
+  color: #D15628;
+}
+
 .form-control, .form-control:focus {
   background-color: transparent;
   border: none;
