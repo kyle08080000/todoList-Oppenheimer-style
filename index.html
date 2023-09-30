@@ -11,7 +11,7 @@
 <body>
     <div class="container">
         <div class="row mt-5">
-            <div class="col-12 ">
+            <div class="col-12">
                 <div class="text-center ms-2">
                     <h1>Login</h1>
                     <p class="text-spacing">TO CONTINUE</p>
@@ -19,8 +19,13 @@
             </div>
         </div>
         <div class="row">
-            <div class="col">
-                <img class="img-fluid mx-auto d-block" src="img/moviePoster.JPG" alt="奧本海默海報">
+            <div class="col text-center">
+                <figure class="figure">
+                    <img class="img-fluid" src="img/moviePoster.JPG" alt="奧本海默海報" style="width: 400px;">
+                    <figcaption class="figure-caption text-end" style="color: aliceblue;">
+                        Now I am become Death, the destroyer of worlds.
+                    </figcaption>
+                </figure>
             </div>
         </div>
         <!-- 信箱 & 密碼 -->
@@ -44,36 +49,39 @@
                     </div>
                 </div>
             </div>
-            <!-- 登入按鈕 -->
-            <div class="col-12 mt-3 text-center">
-                <button class="btn signupBtn px-5 py-2 btn-sm fs-6" type="submit" role="button">
-                    登入
-                </button>
+            <div class="col-12">
+                <div class="row mt-4">
+                    <!-- 登入按鈕 -->
+                    <div class="col-6 text-end">
+                        <button class="btn signupBtn px-5 py-2 btn-sm fs-6" type="submit" role="button">
+                            登入
+                        </button>
+                    </div>
+                    <!-- 註冊帳號 -->
+                    <div class="col-6 fs-5 text-start">
+                        <a href="signUp.html" class="registerBtn btn fs-6">
+                            <div class="text">
+                                <span>註</span>
+                                <span>冊</span>
+                                <span>帳</span>
+                                <span>號</span>
+                            </div>
+                            <div class="clone">
+                                <span>馬</span>
+                                <span>上</span>
+                                <span>註</span>
+                                <span>冊</span>
+                            </div>
+                            <svg width="20px" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
             </div>
         </form>
 
-        <!-- 註冊帳號 -->
-        <div class="row mt-5">
-            <div class="col fs-5 text-center">
-                <a href="signUp.html" class="registerBtn btn fs-6">
-                    <div class="text">
-                        <span>註</span>
-                        <span>冊</span>
-                        <span>帳</span>
-                        <span>號</span>
-                    </div>
-                    <div class="clone">
-                        <span>馬</span>
-                        <span>上</span>
-                        <span>註</span>
-                        <span>冊</span>
-                    </div>
-                    <svg width="20px" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                    </svg>
-                </a>
-            </div>
-        </div>
+        
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
