@@ -26,42 +26,7 @@ localStorage.setItem('token', token);
             }
 
             if (form.checkValidity()) {
-                signUp(email,nickname,password)
-                .then(response => {
-                    // sign up successful
-                    Swal.fire({
-                        icon: 'success',
-                        title: '註冊成功',
-                        text: '請妥善保管您的帳號！',
-                        confirmButtonColor: '#6E1610',
-                        confirmButtonText: '開始使用！',
-                        preConfirm: async () => {
-                            try {
-                                await logIn(email, password);
-                                window.location.href = 'todoList.html';  // 登入成功后跳转到todolist.html
-                            } catch (error) {
-                                Swal.showValidationMessage(`登入失败: ${error.message}`);
-                            }
-                        }
-                    });
-                })
-                .catch(error => {
-                    if (error.response && error.response.status === 422) {
-                        // Handle 422 error
-                        Swal.fire({
-                            icon: 'error',
-                            title: '注册失败',
-                            text: '可能是由于重复的电子邮件地址或其他验证错误.'
-                        });
-                    } else {
-                        // Handle other errors
-                        Swal.fire({
-                            icon: 'error',
-                            title: '发生错误',
-                            text: error.message
-                        });
-                    }
-                });
+                signUp(email,nickname,password);
             } else {
                 form.classList.add('was-validated');
             }
@@ -78,32 +43,53 @@ async function signUp(email,nickname,password){
                 "password": password
             }
         });
-        return response; // return response if sign up is successful
+        Swal.fire({
+            icon: 'success',
+            title: '註冊成功',
+            text: '請妥善保管您的帳號！',
+            confirmButtonColor: '#6E1610',
+            confirmButtonText: '開始使用！',
+            preConfirm: async () => {
+                try {
+                    await logIn(email, password);
+                    window.location.href = 'todoList.html';  // 登入成功后跳转到todolist.html
+                } catch (error) {
+                    Swal.showValidationMessage(`登入失败: ${error.message}`);
+                }
+            }
+        });
     } catch(error) {
-        throw error; // throw error if sign up fails
+        if (error.response && error.response.status === 422) {
+            // Handle 422 error
+            Swal.fire({
+                icon: 'error',
+                title: '注册失败',
+                text: '重复的电子邮件地址.'
+            });
+        } else {
+            // Handle other errors
+            Swal.fire({
+                icon: 'error',
+                title: '发生错误',
+                text: error.message
+            });
+        }
+    }
+}
+
+async function logIn(email,password){
+    try{
+        const response = await axios.post(`${apiUrl}/users/sign_in`,{
+            "user": {
+                "email": email,
+                "password": password
+            }
+        });
+        axios.defaults.headers.common['Authorization'] = response.headers.authorization;
+        localStorage.setItem('token', response.headers.authorization);  // 更新 localStorage
+    } catch(error) {
+        Swal.showValidationMessage(`登入失败: ${error.message}`);
     }
 }
 
 
-function logIn(email,password){
-    return axios.post(`${apiUrl}/users/sign_in`,{
-        "user": {
-            "email": email,
-            "password": password
-        }
-    })
-    .then(response=>{
-        axios.defaults.headers.common['Authorization'] = response.headers.authorization;
-        localStorage.setItem('token', response.headers.authorization);  // 更新 localStorage
-    })
-    .catch(error => {
-        console.log(error.response);
-        if (error.response && error.response.status === 422) {
-            Swal.fire({
-                icon: 'error',
-                title: '登录失败',
-                text: '無此登入帳戶。'
-            });
-        }
-    });
-}

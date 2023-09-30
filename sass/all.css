@@ -14773,6 +14773,53 @@ a {
   transform: translateY(-50%) rotate(-90deg);
 }
 
+a {
+  color: #D15628;
+  text-decoration: none;
+}
+
+.init-input::-moz-placeholder {
+  opacity: 0;
+}
+
+.init-input::placeholder {
+  opacity: 0;
+}
+
+.text-spacing {
+  letter-spacing: 0.6rem;
+  margin-right: -0.6rem;
+}
+
+.form-control, .form-control:focus {
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid #F6B24C; /* 你可以选择你想要的底线颜色和宽度 */
+  border-radius: 0; /* 如果需要，可以移除边框的圆角 */
+}
+
+.form-floating > .form-control:not(:-moz-placeholder-shown) ~ label::after {
+  background-color: transparent;
+}
+
+.form-floating > .form-control:focus ~ label::after,
+.form-floating > .form-control:not(:placeholder-shown) ~ label::after,
+.form-floating > .form-control-plaintext ~ label::after,
+.form-floating > .form-select ~ label::after {
+  background-color: transparent;
+}
+
+.form-floating > .form-control:not(:-moz-placeholder-shown) ~ label {
+  color: #ced4da; /* 浮動時標籤顯示顏色 */
+}
+
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label,
+.form-floating > .form-control-plaintext ~ label,
+.form-floating > .form-select ~ label {
+  color: #ced4da; /* 浮動時標籤顯示顏色 */
+}
+
 .signupBtn {
   position: relative;
   background-color: #F6B24C;

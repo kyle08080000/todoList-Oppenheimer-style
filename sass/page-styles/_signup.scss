@@ -1,4 +1,38 @@
+a{
+    color: $login_float;
+    text-decoration: none;
+}
 
+.init-input::placeholder{
+    opacity: 0;
+}
+
+.text-spacing{
+    letter-spacing: .6rem;
+    margin-right: -.6rem;
+}
+
+.form-control,.form-control:focus{
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid $underline; /* 你可以选择你想要的底线颜色和宽度 */
+    border-radius: 0; /* 如果需要，可以移除边框的圆角 */
+}
+
+.form-floating > .form-control:focus ~ label::after,
+.form-floating > .form-control:not(:placeholder-shown) ~ label::after,
+.form-floating > .form-control-plaintext ~ label::after,
+.form-floating > .form-select ~ label::after {
+    background-color: transparent;// 透明背景 
+}
+
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label,
+.form-floating > .form-control-plaintext ~ label,
+.form-floating > .form-select ~ label {
+    // background-color: transparent;
+    color: $gray-400;  /* 浮動時標籤顯示顏色 */
+}
 
 // 註冊帳號
 .signupBtn {
