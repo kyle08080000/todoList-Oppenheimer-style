@@ -17,22 +17,30 @@
         <!-- 主要內容 -->
         <div class="row">
             <div class="col-md-8 col-lg-6 mx-auto position-relative">
-                <!-- 清除已完成項目 -->
-                <button class="clear btn" type="submit">
-                    <i class="fas fa-calendar-times fs-3"></i>
-                </button>
-                <!-- 標題 -->
-                <div class="title mt-5 mb-3 text-center">
-                    <h1 class="fw-bold">
-                        <i class="fas fa-atom"></i>
-                        <span style="color: #D15628;">TODO</span>
-                        <span>LIST</span><br>
-                    </h1>
-                    <span class="fs-6">Get things done, one item at a time.</span>
+                <div class="row my-4">
+                    <div class="col-8">
+                        <!-- 標題 -->
+                        <div class="title">
+                            <h1 class="fw-bold">
+                                <i class="fas fa-atom"></i>
+                                <span style="color: #D15628;">TODO</span>
+                                <span>LIST</span><br>
+                            </h1>
+                            <span class="fs-6">Get things done, one item at a time.</span>
+                        </div>
+                    </div>
+                    <div class="col-4 text-end">
+                        <!-- 清除已完成項目 -->
+                        <button class="clear btn" type="submit">
+                            <i class="fas fa-calendar-times fs-3"></i>
+                        </button>
+                        <button class="btn signOut">
+                            <i class="fas fa-user-alt fs-3"></i>
+                        </button>
+                    </div>
                 </div>
-                <button class="btn signOut">
-                    <i class="fas fa-user-alt fs-3"></i>
-                </button>
+                
+                
                 
                 <!-- 卡片主要內容 -->
                 <div class="card shadow">
