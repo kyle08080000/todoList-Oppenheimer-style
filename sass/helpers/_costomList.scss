@@ -11,6 +11,11 @@ a {
     // color: #AABFDA;
 }
 
+input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
 ::placeholder { /* 選擇所有的 placeholder */
     color: $mybtn !important;
 }
@@ -19,66 +24,45 @@ a {
     background-color: $checked;
 }
 
+// 清除所有項目
+.clear {
+    color: $clearCompleted;
+    position: absolute;
+    top: 1.3rem;
+    left: 0.4rem;
+}
+
+// 登出
+.signOut{
+    color: $gray-400;
+    position: absolute;
+    top: 1.3rem;
+    right: 0.4rem;
+}
+
+
 .card {
     background-color: #F6B24C;
-
-    .nav-tabs > a {
-        color: #E07763;
-        border-bottom: 0;
-
-        &.active {
-            background-color: $mynav-tabs;
-            color: #F6B24C;
-        }
-    }
-
-    .Badges-Category{
-        // left: 60px;
-    }
-    .Badges-completed{
-        // left: 160px;
-    }
-    .Badges-undone{
-        // right: 70px;
-    }
+}
+// 卡片導航欄
+.navTodo{
+    color: $gray-700;
+}
+.allBadge,.doneBadge,.undoneBadge{
+    position: absolute;
+    top: 0;
+    left: 85%;
 }
 
-
-.addModal {
-    color: #E07763;
-}
-
-.modal-content{
-    background-color: $mymodal;
-    .modal-header{
-        .modal-title{
-            color: #F6B24C;
-            .fa-atom{
-                color: #F6B24C;
-            }
-        }
-    }
-    .modal-footer{
-        .modal-btn-close{
-            background-color: #F6B24C;
-            border: 0;
-            color: #E07763;
-        }
-        .store{
-            background-color: #6E1610;
-            border: 0;
-            color: #F6B24C;
-        }
-    }
-}
-
-.pending-count {
-    color: #5C1010;
+.active{
+    background-color: $cardNavActive !important;
 }
 
 .card-body{
     padding: 0;
 }
+
+// 待辦列表項目
 .item-list{
     // border-left: 1px solid #fff;
     // border-right: 1px solid #fff;
@@ -99,13 +83,21 @@ a {
         }
     }
 }
+/* 针对WebKit浏览器如Chrome */
+.item-list::-webkit-scrollbar {
+    display: none;
+}
+.item-list {
+    scrollbar-width: thin;
+}
 
-// 刪除線
+
+// 代辦事項文字區塊
 .task-name {
     display: inline-block;
     position: relative;
     transition: color 0.3s;
-    &.striked {
+    &.striked { // 刪除線
         color: #E07763 !important;
         // color: rgba(0, 0, 0, 0.5) !important;
     }
@@ -129,20 +121,6 @@ a {
         animation: unstrike 0.3s forwards;
     }
 }
-
-.Toast {
-    background-color: $mytoast;
-    .toast-div{
-        background-color: $mytoast;
-    }
-    .toast-body {
-        background-color: $mytoast;
-        color: #F6B24C;
-    }
-}
-
-
-
 @keyframes strikeThrough {
     0% {
         width: 0;
@@ -152,7 +130,6 @@ a {
         width: 100%;
     }
 }
-
 @keyframes unstrike {
     0% {
         width: 100%;
@@ -163,79 +140,18 @@ a {
     }
 }
 
-// 漢堡選單
-.navbar-toggler {
-    position: absolute;
-    top: 2.5rem;
-    right: 1rem;
-    border: 0;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    background-color: $mybar;
-    .fa-radiation-alt {
-        color: #5C1010;
-    }
-}
 
-.nav {
-    border-bottom: 1px solid $gray-300;
 
-    &-link {
-        color: $secondary;
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
-}
-
-.offcanvas{
-    background-color: $myoffcanvas;
-    color: #481F1E;
-}
-.search-btn{
-    background-color: #D15628;
-    .fa-search{
-        color: #481F1E;
-    }
-}
-
-.bar-nav-link {
-    color: #6E1610 !important;
-    &.active{
-        color: #D15628 !important;
-    }
-}
-
-.bi-window-plus {
-    font-size: 1.5rem;
-}
-
-.clear {
-    color: $gray-500;
-    text-decoration: none;
-}
-
-// 排序按紐
-.form-check.form-switch {
-    display: flex;
-    .form-check-input:checked {
-        background-color: $myswitchBtn;
-        order: 2;
-    }
-}
-
-input:focus {
-    outline: none;
-    box-shadow: none;
-}
-
+// 新增待辦事項
 .newitem{
-    border: 1.5px solid $myInput;
-    &::-webkit-input-placeholder { /* WebKit 瀏覽器 */
-        color: $mybtn;
-    }
+    border: 5px solid $mypopover !important;
+    border-radius: 10px 0 0 10px !important;
+    color: $myInputText !important;
+    background-color: $myInput !important;
+    
 }
 
+// 送出按鈕
 .addButton {
     border: 1.5px solid $myaddBtn;
     background-color: $myaddBtn;
@@ -244,30 +160,9 @@ input:focus {
         background-color: #D15628;
     }
 }
-.dropdown-btn{
-    border-top: 1.5px solid $myaddBtn;
-    border-bottom: 1.5px solid  $myaddBtn;
-    background-color: $mystoreBtn;
-    color: #F6B24C;
-    &:hover{
-        background-color: $mystoreBtn;
-    }
-}
-// 下拉選單
-.category-menu{
-    background-color: #D15628;
-    & > li > a{
-        color: #F6B24C;
-        &.active{
-            background-color: #F6B24C;
-            color: #6E1610;
-        }
-    }
-}
 
-// 提示匡
-.popover-btn{
-    right: 55px;
-    border-color: $mytoast;
-}
 
+// 更新任務數量
+.pending-count {
+    color: #5C1010;
+}

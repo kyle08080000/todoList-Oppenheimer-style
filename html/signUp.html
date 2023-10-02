@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    <link rel="stylesheet" href="sass/all.css">
-    <title>login</title>
+    <link rel="stylesheet" href="../sass/all.css">
+    <title>todoList-signUp</title>
 </head>
 <body class="signUp-body">
     <div class="container">
@@ -36,24 +36,39 @@
                     <input type="text" class="init-input form-control" id="floatingUsername" name="username" placeholder="您的暱稱" pattern="\S+.*" required>
                     <!-- pattern="^[a-zA-Z0-9]{5,15}$" required -->
                     <label class="floatingTages" for="floatingUsername">您的暱稱＊</label>
+                    <div class="valid-feedback">
+                        看起來不錯！
+                    </div>
                     <div class="invalid-feedback">
-                        用户不可為空白。
+                        用户名不可為空白。
                     </div>
                 </div>
-                <div class="form-floating password mb-3">
-                    <input type="password" class="init-input form-control" id="floatingPassword" name="password" placeholder="密码＊" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" required>
-                    <label class="floatingTages" for="floatingPassword">密码＊</label>
-                    <div class="invalid-feedback">
-                        必须包含至少一个大写字母、一个小写字母和一个数字，长度至少为8个字符。
+                <div class="form-group position-relative">
+                    <div class="form-floating password mb-3">
+                        <input type="password" class="init-input form-control" id="floatingPassword" name="password" placeholder="密码＊" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" required oninput="toggleEyeIcon('floatingPassword')">
+                        <label class="floatingTages" for="floatingPassword">密码＊</label>
+                        <div class="valid-feedback">
+                            符合！
+                        </div>
+                        <div class="invalid-feedback">
+                            必须包含至少一个大写字母、一个小写字母和一个数字，长度至少为8个字符。
+                        </div>
                     </div>
+                    <i class="fas fa-eye-slash password-toggle" aria-hidden="true" onclick="togglePasswordVisibility('floatingPassword')" id="eyeIconfloatingPassword"></i>
                 </div>
-                <div class="form-floating confirm-password mb-3">
-                    <input type="password" class="init-input form-control" id="floatingConfirmPassword" name="confirmPassword" placeholder="再次输入密码＊" required>
-                    <label class="floatingTages" for="floatingConfirmPassword">再次输入密码＊</label>
-                    <div class="invalid-feedback">
-                        不相符，请注意大小写。
+                <div class="form-group position-relative">
+                    <div class="form-floating confirm-password mb-3">
+                        <input type="password" class="init-input form-control" id="floatingConfirmPassword" name="confirmPassword" placeholder="再次输入密码＊" required oninput="toggleEyeIcon('floatingConfirmPassword')">
+                        <label class="floatingTages" for="floatingConfirmPassword">再次输入密码＊</label>
+                        <div class="valid-feedback">
+                            符合！
+                        </div>
+                        <div class="invalid-feedback">
+                            不相符，请注意大小写。
+                        </div>
                     </div>
-                </div>
+                    <i class="fas fa-eye-slash password-toggle" aria-hidden="true" onclick="togglePasswordVisibility('floatingConfirmPassword')" id="eyeIconfloatingConfirmPassword"></i>
+                </div>                                                   
             </div>
             <!-- 登录按钮 -->
             <div class="col-12 mt-3 text-center">
@@ -94,6 +109,6 @@
     <script src="https://kit.fontawesome.com/3d5b6364a2.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="js/signUp.js"></script>
+    <script src="../js/signUp.js"></script>
 </body>
 </html>

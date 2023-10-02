@@ -29,6 +29,34 @@ a{
     color: $gray-400;  /* 浮動時標籤顯示顏色 */
 }
 
+// 密碼显示/隐藏
+.password-toggle {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.form-floating {
+    position: relative;
+}
+.password-toggle {
+    position: absolute;
+    right: 35px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.form-floating {
+    position: relative;
+}
+
+
+
+
+
 // 註冊帳號
 .signupBtn {
     position: relative;

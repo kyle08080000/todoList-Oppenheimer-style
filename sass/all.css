@@ -14382,6 +14382,11 @@ h1, .h1, span {
   color: #F6B24C;
 }
 
+input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
 ::-moz-placeholder { /* 選擇所有的 placeholder */
   color: #F6B24C !important;
 }
@@ -14394,43 +14399,36 @@ h1, .h1, span {
   background-color: #F6B24C;
 }
 
+.clear {
+  color: #F6B24C;
+  position: absolute;
+  top: 1.3rem;
+  left: 0.4rem;
+}
+
+.signOut {
+  color: #ced4da;
+  position: absolute;
+  top: 1.3rem;
+  right: 0.4rem;
+}
+
 .card {
   background-color: #F6B24C;
 }
-.card .nav-tabs > a {
-  color: #E07763;
-  border-bottom: 0;
-}
-.card .nav-tabs > a.active {
-  background-color: #D15628;
-  color: #F6B24C;
-}
-.addModal {
-  color: #E07763;
+
+.navTodo {
+  color: #495057;
 }
 
-.modal-content {
-  background-color: #D15628;
-}
-.modal-content .modal-header .modal-title {
-  color: #F6B24C;
-}
-.modal-content .modal-header .modal-title .fa-atom {
-  color: #F6B24C;
-}
-.modal-content .modal-footer .modal-btn-close {
-  background-color: #F6B24C;
-  border: 0;
-  color: #E07763;
-}
-.modal-content .modal-footer .store {
-  background-color: #6E1610;
-  border: 0;
-  color: #F6B24C;
+.allBadge, .doneBadge, .undoneBadge {
+  position: absolute;
+  top: 0;
+  left: 85%;
 }
 
-.pending-count {
-  color: #5C1010;
+.active {
+  background-color: #5C1010 !important;
 }
 
 .card-body {
@@ -14448,6 +14446,15 @@ h1, .h1, span {
 }
 .item-list .list-group-item .trash:hover {
   color: red;
+}
+
+/* 针对WebKit浏览器如Chrome */
+.item-list::-webkit-scrollbar {
+  display: none;
+}
+
+.item-list {
+  scrollbar-width: thin;
 }
 
 .task-name {
@@ -14473,17 +14480,6 @@ h1, .h1, span {
   animation: unstrike 0.3s forwards;
 }
 
-.Toast {
-  background-color: #D15628;
-}
-.Toast .toast-div {
-  background-color: #D15628;
-}
-.Toast .toast-body {
-  background-color: #D15628;
-  color: #F6B24C;
-}
-
 @keyframes strikeThrough {
   0% {
     width: 0;
@@ -14500,75 +14496,11 @@ h1, .h1, span {
     width: 0;
   }
 }
-.navbar-toggler {
-  position: absolute;
-  top: 2.5rem;
-  right: 1rem;
-  border: 0;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  background-color: #F6B24C;
-}
-.navbar-toggler .fa-radiation-alt {
-  color: #5C1010;
-}
-
-.nav {
-  border-bottom: 1px solid #dee2e6;
-}
-.nav-link {
-  color: #6c757d;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-.offcanvas {
-  background-color: #F6B24C;
-  color: #481F1E;
-}
-
-.search-btn {
-  background-color: #D15628;
-}
-.search-btn .fa-search {
-  color: #481F1E;
-}
-
-.bar-nav-link {
-  color: #6E1610 !important;
-}
-.bar-nav-link.active {
-  color: #D15628 !important;
-}
-
-.bi-window-plus {
-  font-size: 1.5rem;
-}
-
-.clear {
-  color: #adb5bd;
-  text-decoration: none;
-}
-
-.form-check.form-switch {
-  display: flex;
-}
-.form-check.form-switch .form-check-input:checked {
-  background-color: #6E1610;
-  order: 2;
-}
-
-input:focus {
-  outline: none;
-  box-shadow: none;
-}
-
 .newitem {
-  border: 1.5px solid #481F1E;
-}
-.newitem::-webkit-input-placeholder { /* WebKit 瀏覽器 */
-  color: #F6B24C;
+  border: 5px solid #D15628 !important;
+  border-radius: 10px 0 0 10px !important;
+  color: #F6B24C !important;
+  background-color: #481F1E !important;
 }
 
 .addButton {
@@ -14580,30 +14512,8 @@ input:focus {
   background-color: #D15628;
 }
 
-.dropdown-btn {
-  border-top: 1.5px solid #5C1010;
-  border-bottom: 1.5px solid #5C1010;
-  background-color: #D15628;
-  color: #F6B24C;
-}
-.dropdown-btn:hover {
-  background-color: #D15628;
-}
-
-.category-menu {
-  background-color: #D15628;
-}
-.category-menu > li > a {
-  color: #F6B24C;
-}
-.category-menu > li > a.active {
-  background-color: #F6B24C;
-  color: #6E1610;
-}
-
-.popover-btn {
-  right: 55px;
-  border-color: #D15628;
+.pending-count {
+  color: #5C1010;
 }
 
 a {
@@ -14817,6 +14727,30 @@ a {
 .form-floating > .form-control-plaintext ~ label,
 .form-floating > .form-select ~ label {
   color: #ced4da; /* 浮動時標籤顯示顏色 */
+}
+
+.password-toggle {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.form-floating {
+  position: relative;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 35px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.form-floating {
+  position: relative;
 }
 
 .signupBtn {
