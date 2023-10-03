@@ -40,13 +40,12 @@ async function logIn(email,password){
         // 從回應 headers 中取得 Authorization token
         const authToken = response.headers['authorization'] || response.headers['Authorization'] || response.headers['AUTHORIZATION']; //若回傳有金鑰
 
+        
         if (authToken) {
             // 將 Authorization token 設置為 axios 的預設 headers
-            // axios.defaults.headers.common['Authorization'] = authToken; //kyle
             axios.defaults.headers.common['Authorization'] = response.headers.authorization;
             localStorage.setItem('token', response.headers.authorization);  // 更新 localStorage
-            // 將 Authorization token 儲存在 localStorage 中
-            // localStorage.setItem('token', authToken); ///kyle
+            
 
             Swal.fire({
                 icon: 'success',

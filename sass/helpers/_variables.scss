@@ -1496,7 +1496,7 @@ $toast-color:                       null !default;
 $toast-background-color:            $mytoast;//rgba(var(--#{$prefix}body-bg-rgb), .85) !default; //kyle
 $toast-border-width:                var(--#{$prefix}border-width) !default; //kyle
 $toast-border-color:                $mytoast;//var(--#{$prefix}border-color-translucent) !default; //kyle
-$toast-border-radius:               1.5rem;///var(--#{$prefix}border-radius) !default; //kyle
+$toast-border-radius:               var(--#{$prefix}border-radius) !default; //kyle
 $toast-box-shadow:                  var(--#{$prefix}box-shadow) !default;
 $toast-spacing:                     $container-padding-x !default;
 

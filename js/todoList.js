@@ -1,6 +1,43 @@
 const apiUrl = `https://todoo.5xcamp.us`;
-// let token = axios.defaults.headers.common['Authorization'];
-// localStorage.setItem('token', token);
+
+// 防止登出用戶按上一頁返回
+window.onload = function() {
+    const token = localStorage.getItem('token');  
+    
+    if (!token) {
+        Swal.fire({
+            icon: 'error',
+            title: '連線已過期',
+            text: '請重新登入',
+            confirmButtonText: '確定',
+            allowOutsideClick: false,
+            backdrop: 'rgba(0,0,0,1)'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '../index.html';
+            }
+        });
+    }
+    // 從 localStorage 中獲取 username
+    const username = localStorage.getItem('username');
+    if(username) {
+        WelcomeMessage(username);// 更新歡迎訊息
+    }
+}
+// 歡迎訊息的函數
+function WelcomeMessage(username) {
+    let toastBody = document.querySelector('.toast-body');
+    
+    if (toastBody) {
+        toastBody.textContent = `歡迎加入, ${username}！`;
+        // 在這裡你可能還想要顯示 toast，如果它不是自動顯示的
+        var toastEl = document.getElementById('welcomeToast');
+        var toast = new bootstrap.Toast(toastEl);
+        toast.show();
+    } else {
+        console.error("Toast body not found!");
+    }
+}
 
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -11,6 +48,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const clearButton = document.querySelector('.clear');
     const pendingCountElement = document.querySelector('.pending-count');
     
+    let toastEl = document.getElementById('welcomeToast'); // 取得toast元素
+    let toast = new bootstrap.Toast(toastEl); // 初始化toast
+    
+    toast.show();
 
     // 取得代辦
     function getTodo() {
@@ -35,11 +76,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // 初始化時調用一次，以確保正確顯示初始任務數量
     getTodo().then(userTodos => {
         if (userTodos) {  // 确保数据有效
-            renderData(userTodos);  // 将数据传递给 renderData 函数
+            // renderData(userTodos);  // 将数据传递给 renderData 函数
+            todos = userTodos; // 保存到 todos 變數中
+            filterTodos('all',todos); // 初始化時展示所有待辦事項
         }
     });
-    
-    
+
     // document.querySelector('.nav-tabs .Category').textContent = '全部';
     let isAnimating = false;
 
@@ -54,6 +96,100 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 初始化時調用一次，以確保正確顯示初始任務數量
     // renderData();
+
+
+    // 登出
+    document.querySelector('.signOut').addEventListener('click', function() {
+        Swal.fire({
+            title: '您確定要登出嗎？',
+            text: "您可以在任何時候重新登入！",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '是的，登出！',
+            cancelButtonText: '取消'
+        }).then((result) => {
+            // 如果用戶點擊了「是的，登出！」按鈕
+            if (result.isConfirmed) {
+                // 呼叫 signOut 函數，並在成功登出後處理用戶的UI更新
+                signOut().then(response => {
+                    if(response.status === 200) { 
+                        localStorage.removeItem('token');
+                        Swal.fire(
+                            '已登出！',
+                            '您已成功登出。',
+                            'success'
+                        ).then(() => {
+                            window.location.href = '../index.html';
+                        });
+                    }
+                }).catch(error => {
+                    console.error('登出過程中發生錯誤', error);
+                    Swal.fire(
+                        '錯誤！',
+                        '登出過程中發生錯誤。',
+                        'error'
+                    );
+                });
+            }
+        });
+    });
+    
+    function signOut() {
+        const token = localStorage.getItem('token'); 
+        return axios.delete(`${apiUrl}/users/sign_out`, {
+            headers: {
+                'Authorization': token
+            }
+        });
+    }
+
+
+    let navTodos = document.querySelectorAll('.navTodo');  // 選擇所有的 .navTodo 按鈕
+
+    navTodos.forEach(button => {
+        button.addEventListener('click', function() {
+            // 在這裡獲取 data-filter 屬性值，並將其作為參數傳遞給 filterTodos 函數
+            let type = this.getAttribute('data-filter');
+            filterTodos(type, todos);  // 假設 todos 是一個已定義並包含待辦事項的變量
+
+            // 移除所有按钮的 active 类
+            navTodos.forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // 给被点击的按钮添加 active 类
+            this.classList.add('active');
+        });
+    });
+    // 過濾待辦事項的函數
+    function filterTodos(type,todos) {
+        let filteredTodos;
+        currentFilter = type;  // 更新当前的过滤状态
+        
+        switch(type) {
+            case 'all':
+                filteredTodos = todos;
+                break;
+            case 'completed':
+                filteredTodos = todos.filter(todo => todo.completed_at !== null);
+                break;
+            case 'uncompleted':
+                filteredTodos = todos.filter(todo => todo.completed_at === null);
+                break;
+        }
+        
+        renderData(filteredTodos);// 已经将过滤后的待办事项传递给 renderData 函数
+        // 你可能還需要更新待辦事項數量的 badge
+        updateTodoBadges(todos);
+    }
+    function updateTodoBadges(todos) {
+        document.querySelector('.allBadge').textContent = `+${todos.length}`;
+        document.querySelector('.doneBadge').textContent = `+${todos.filter(todo => todo.completed_at !== null).length}`;
+        document.querySelector('.undoneBadge').textContent = `+${todos.filter(todo => todo.completed_at === null).length}`;
+    }
+    
 
 
 
@@ -95,7 +231,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log(response)
                 getTodo().then(userTodos => {
                     if (userTodos) {  // 确保数据有效
+                        todos = userTodos;  // <<< 更新全局 todos 变量
                         renderData(userTodos);  // 将数据传递给 renderData 函数
+                        updateTodoBadges(todos); // 更新徽章
                     }
                 });
             })
@@ -136,7 +274,13 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => {
                 console.log(response)
                 listItem.remove()  // 从 DOM 中移除 listItem
-                getTodo()  // 从服务器获取最新的待办事项数据
+                getTodo().then(userTodos => {
+                    if (userTodos) {
+                        todos = userTodos;  // 更新全局 todos 变量
+                        renderData(todos);  // 重新渲染 UI
+                        updateTodoBadges(todos); // 更新徽章
+                    }
+                });
             })
             .catch(error => console.log(error.response));
         }
@@ -185,9 +329,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 渲染数据到 HTML
     function renderData(userTodos) {
-        // console.log(typeof userTodos); // 应该输出 'object'
-        // console.log(Array.isArray(userTodos)); // 应该输出 true
-
         // 檢查是否有動畫正在運行
         if (isAnimating) return;
         // 清除當前列表
@@ -278,11 +419,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     item.completed_at = isCompleted ? new Date().toISOString() : null;
                     // 更新用戶界面
                     updateUI(item, checkbox); // 更新用戶界面以反映待辦事項的新狀態
+                    filterTodos(currentFilter, todos);  // 确保在更新状态后重新过滤待办事项
+                    updateTodoBadges(todos);  // 确保在更新状态后更新徽章
                 })
                 .catch(error => console.log(error));  // 處理任何錯誤
         });
     }
-
     // 通過API向服務器更新待辦事項的完成狀態
     function updateTodoStatus(todoId, isCompleted) {
         const token = localStorage.getItem('token');  // 從 localStorage 獲取 token

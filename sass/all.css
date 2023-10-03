@@ -5532,7 +5532,7 @@ textarea.form-control-lg {
   --bs-toast-bg: #D15628;
   --bs-toast-border-width: var(--bs-border-width);
   --bs-toast-border-color: #D15628;
-  --bs-toast-border-radius: 1.5rem;
+  --bs-toast-border-radius: var(--bs-border-radius);
   --bs-toast-box-shadow: var(--bs-box-shadow);
   --bs-toast-header-color: var(--bs-secondary-color);
   --bs-toast-header-bg: rgba(var(--bs-body-bg-rgb), 0.85);
@@ -14397,6 +14397,10 @@ input:focus {
 
 .form-check-input:checked {
   background-color: #F6B24C;
+}
+
+.toast {
+  z-index: 10;
 }
 
 .clear {

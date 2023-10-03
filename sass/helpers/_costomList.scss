@@ -24,6 +24,10 @@ input:focus {
     background-color: $checked;
 }
 
+.toast{
+    z-index: 10;
+}
+
 // 清除所有項目
 .clear {
     color: $clearCompleted;

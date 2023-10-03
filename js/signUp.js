@@ -36,6 +36,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
             const email = form.email.value;
             const nickname = form.username.value;
             const password = form.password.value;
+            // 將 nickname 存到 localStorage
+            localStorage.setItem('username', nickname);
 
             if (form.checkValidity()) {
                 signUp(email, nickname, password)
@@ -57,6 +59,8 @@ async function signUp(email,nickname,password){
                 "password": password
             }
         });
+        
+
         Swal.fire({
             icon: 'success',
             title: '註冊成功',

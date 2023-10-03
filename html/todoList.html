@@ -10,9 +10,20 @@
 </head>
 
 <body>
-    <div class="container">
+    <div class="container position-relative">
 
         <!-- 歡迎訊息 -->
+        <div class="toast position-absolute top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" id="welcomeToast">
+            <div class="toast-header">
+                <i class="fas fa-atom"></i>
+                <strong class="me-auto">Todo List</strong>
+                <small>now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                歡迎回來！
+            </div>
+        </div>
 
         <!-- 主要內容 -->
         <div class="row">
@@ -30,8 +41,8 @@
                             <span class="fs-6 text-nowrap">Get things done, one item at a time.</span>
                         </div>
                     </div>
-                    <!-- 清除已完成項目 -->
-                    <div class="col-4 text-end">
+                    <!-- 清除已完成項目 ＆ 登出 -->
+                    <div class="col-4 text-end text-nowrap">
                         <button class="clear btn" type="submit">
                             <i class="fas fa-calendar-times fs-3"></i>
                         </button>
@@ -41,30 +52,22 @@
                     </div>
                 </div>
                 
-                
-                
-                <!-- 卡片主要內容 -->
+                <!-- 主要內容 -->
                 <div class="card shadow">
                     <!-- 卡片導航欄 -->
                     <div class="row card-header">
                         <nav class="col-12 card-nav nav nav-pills nav-fill flex-nowrap pe-0 w-100">
-                            <button class="navTodo px-1 nav-link text-nowrap active position-relative" onclick="filterTodos('all')">
+                            <button class="navTodo px-1 nav-link text-nowrap active position-relative" data-filter="all">
                                 全部
-                                <span class="allBadge badge translate-middle rounded-pill bg-danger">
-                                    +12
-                                </span>
+                                <span class="allBadge badge translate-middle rounded-pill bg-danger">+12</span>
                             </button>
-                            <button class="navTodo px-1 nav-link text-nowrap position-relative" onclick="filterTodos('completed')">
+                            <button class="navTodo px-1 nav-link text-nowrap position-relative" data-filter="completed">
                                 已完成
-                                <span class="doneBadge badge translate-middle rounded-pill bg-danger">
-                                    +12
-                                </span>
+                                <span class="doneBadge badge translate-middle rounded-pill bg-danger">+12</span>
                             </button>
-                            <button class="navTodo px-1 nav-link text-nowrap position-relative" onclick="filterTodos('uncompleted')">
+                            <button class="navTodo px-1 nav-link text-nowrap position-relative" data-filter="uncompleted">
                                 未完成
-                                <span class="undoneBadge badge translate-middle rounded-pill bg-danger">
-                                    +12
-                                </span>
+                                <span class="undoneBadge badge translate-middle rounded-pill bg-danger">+12</span>
                             </button>
                         </nav>
                     </div>
@@ -73,7 +76,7 @@
                         <!-- 待辦列表項目 -->
                         <div class="col-12 overflow-auto item-list">
                             <ul class="list-group" style="height: 290px;">
-        
+
                             </ul>
                         </div>
                         
@@ -96,6 +99,7 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://kit.fontawesome.com/3d5b6364a2.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
     <script src="../js/todoList.js"></script>
