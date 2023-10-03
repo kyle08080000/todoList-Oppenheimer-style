@@ -27,12 +27,12 @@ input:focus {
 .toast{
     z-index: 10;
     position: absolute;
-    top: 1.3rem;
+    top: 4.5rem;
     right: .4rem;
 }
 
 // 清除所有項目
-.clear {
+.clearAll {
     color: $clearCompleted;
     // position: absolute;
     // top: 1.3rem;

@@ -24,6 +24,18 @@
                 歡迎回來！
             </div>
         </div>
+        <!-- 無已完成項目訊息 -->
+        <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="uncompletedToast">
+            <div class="toast-header">
+                <i class="fas fa-atom"></i>
+                <strong class="me-auto">Todo List</strong>
+                <small>now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                沒有以完成的項目。
+            </div>
+        </div>
 
         <!-- 主要內容 -->
         <div class="row">
@@ -41,8 +53,11 @@
                             <span class="fs-6 text-nowrap">Get things done, one item at a time.</span>
                         </div>
                     </div>
-                    <!-- 登出 -->
+                    <!-- 清除全部已完成 ＆ 登出 -->
                     <div class="col-4 text-end text-nowrap">
+                        <button class="btn clearAll">
+                            <i class="fas fa-calendar-times fs-3"></i>
+                        </button>
                         <button class="btn signOut">
                             <i class="fas fa-user-alt fs-3"></i>
                         </button>

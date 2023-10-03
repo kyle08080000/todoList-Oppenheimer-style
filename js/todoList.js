@@ -29,7 +29,7 @@ function WelcomeMessage(username) {
     let toastBody = document.querySelector('.toast-body');
     
     if (toastBody) {
-        toastBody.textContent = `歡迎加入, ${username}！`;
+        toastBody.textContent = `Hello, ${username}！歡迎您使用 Todo List！`;
 
         var toastEl = document.getElementById('welcomeToast');
         var toast = new bootstrap.Toast(toastEl);
@@ -96,14 +96,14 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 
-    
-
     // 新增待辦事項
     initializeAddTodo();
 
     // 刪除待辦事項
     initializeDeleteTodo();
 
+    // 清除所有已完成項目
+    initializeClearAllCompleted();
 
     /**
      * 登出用戶並更新UI。
@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     /**
-     * 過濾待辦事項並更新UI
+     * 過濾待辦事項並更新 UI
      * @param {string} type 過濾類型：'all' | 'completed' | 'uncompleted'
      * @param {Array} todos 待辦事項數組
      */
@@ -306,33 +306,104 @@ document.addEventListener('DOMContentLoaded', function() {
                 }, 1500);
             }
         });
+    }
 
-        // 將待辦事項的 id 傳遞給伺服器，並從 DOM 中移除元素
-        function deleteTodoFromServer(listItem, todoId) {
-            const token = localStorage.getItem('token');
-            
-            // 使用 axios 向伺服器發送 DELETE 請求以刪除待辦事項
-            axios.delete(`${apiUrl}/todos/${todoId}`, {
-                headers: {
-                    'Authorization': token
+    // 將待辦事項的 id 傳遞給伺服器，並從 DOM 中移除元素
+    function deleteTodoFromServer(listItem, todoId) {
+        const token = localStorage.getItem('token');
+        
+        // 使用 axios 向伺服器發送 DELETE 請求以刪除待辦事項
+        axios.delete(`${apiUrl}/todos/${todoId}`, {
+            headers: {
+                'Authorization': token
+            }
+        })
+        .then(response => {
+            console.log(response);
+            if (listItem) listItem.remove(); // 從 DOM 中移除 listItem
+            // 更新待辦事項列表和 UI
+            return getTodo().then(userTodos => {
+                if (userTodos) {
+                    todos = userTodos; // 更新全局變數 todos
+                    // 更新 UI
+                    renderData(todos);
+                    updateTodoBadges(todos); // 更新徽章
+                    filterTodos(currentFilter, todos); // 重新過濾並渲染待辦事項列表
                 }
-            })
-            .then(response => {
-                console.log(response);
-                listItem.remove(); // 從 DOM 中移除 listItem
-                // 更新待辦事項列表和 UI
-                getTodo().then(userTodos => {
-                    if (userTodos) {
-                        todos = userTodos; // 更新全局變數 todos
-                        // 更新 UI
-                        renderData(todos);
-                        updateTodoBadges(todos); // 更新徽章
-                        filterTodos(currentFilter, todos); // 重新過濾並渲染待辦事項列表
+            });
+        })
+        .catch(error => console.log(error.response));
+    }
+
+    // 初始化清除所有已完成項目
+    function initializeClearAllCompleted() {
+        document.querySelector('.clearAll').addEventListener('click', function () {
+            // 手動設置過濾類型為 'all' 並更新 UI
+            const allButton = document.querySelector('.navTodo[data-filter="all"]');
+            allButton.click();
+            
+            // 彈出 swal 對話框來確認刪除操作
+            Swal.fire({
+                title: '刪除所有已完成項目？',
+                text: "刪除後將無法再次復原。",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '是的, 刪除所有已完成！',
+                cancelButtonText: '取消'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const completedItems = document.querySelectorAll('.list-group-item .striked');
+                    
+                    if (completedItems.length > 0) {
+                        completedItems.forEach(item => {
+                            const listItem = item.closest('.list-group-item');
+                            
+                            // 添加第一個動畫
+                            listItem.classList.add('animate__animated', 'animate__flash');
+                            
+                            // 設置第一個動畫播放完後觸發的操作
+                            setTimeout(() => {
+                                // 添加第二個動畫
+                                listItem.classList.remove('animate__flash');
+                                listItem.classList.add('animate__flipOutX');
+                            }, 800);  // 第一個動畫持續時間
+                        });
+    
+                        setTimeout(() => {
+                             // 刪除所有已完成的項目
+                            clearAllCompleted();
+                        }, 1500);
+                    } else {
+                        let toastEl = document.getElementById('uncompletedToast');
+                        let toast = new bootstrap.Toast(toastEl);
+                        toast.show(); // 顯示無已完成項目訊息 
                     }
+                }
+            });
+        });
+    }
+
+    // 刪除全部已完成
+    function clearAllCompleted() {
+        // 首先獲取最新的待辦事項數據
+        getTodo().then(latestTodos => {
+            // 過濾出所有已完成的待辦事項
+            const completedTodos = latestTodos.filter(todo => todo.completed_at !== null);
+
+            // 創建一個 promise 陣列，其中每個元素都是一個刪除請求
+            const deletePromises = completedTodos.map(completedTodo => deleteTodoFromServer(null, completedTodo.id));
+            
+            // 等待所有的刪除請求完成，然後進行下一步
+            Promise.all(deletePromises)
+                .then(() => {
+                    console.log('所有已完成項目已刪除！');
+                })
+                .catch(error => {
+                    console.log('Error deleting some todos: ', error);
                 });
-            })
-            .catch(error => console.log(error.response));
-        }
+        });
     }
 
     // 渲染數據到 HTML
