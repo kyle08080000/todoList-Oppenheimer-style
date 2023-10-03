@@ -26,6 +26,9 @@ input:focus {
 
 .toast{
     z-index: 10;
+    position: absolute;
+    top: 1.3rem;
+    right: .4rem;
 }
 
 // 清除所有項目
