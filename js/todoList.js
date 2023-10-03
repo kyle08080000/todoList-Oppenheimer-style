@@ -44,46 +44,59 @@ document.addEventListener('DOMContentLoaded', function() {
     const listGroup = document.querySelector('.list-group');
     const newitem = document.querySelector(".newitem");
     const addButton = document.querySelector(".addButton");
-    const sortCheckbox = document.getElementById('flexSwitchCheckDefault');
-    const clearButton = document.querySelector('.clear');
-    const pendingCountElement = document.querySelector('.pending-count');
     
     let toastEl = document.getElementById('welcomeToast'); // 取得toast元素
     let toast = new bootstrap.Toast(toastEl); // 初始化toast
-    
-    toast.show();
+    toast.show(); // 顯示歡迎內容
 
-    // 取得代辦
+    let isAnimating = false;
+
+    /**
+     * 取得用戶的代辦事項。
+     * @returns {Promise<Array>} 返回一個承諾(Promise)，它解析(resolve)為用戶的代辦事項。
+     */
     function getTodo() {
-        const token = localStorage.getItem('token');  // 从 localStorage 获取 token
-    
-        // 这里返回了 axios.get 的 Promise
+        // 從 localStorage 中獲取 token
+        const token = localStorage.getItem('token');  
+
+        // 發起 GET 請求以從伺服器取得代辦事項
+        // 將 token 添加到請求標頭中進行授權
         return axios.get(`${apiUrl}/todos`, {
             headers: {
-                'Authorization': token  // 将 token 添加到请求头中
+                'Authorization': token  
             }
         })
         .then(response => {
-            const userTodos = response.data.todos;  // 获取响应数据
+            // 從響應中取得代辦事項數據
+            const userTodos = response.data.todos;  
             console.log(userTodos);
-            return userTodos;  // 返回 userTodos 以便于在 then 方法中访问
+
+            // 返回數據，以便在後續的 .then 方法中訪問
+            return userTodos;  
         })
         .catch(error => {
+            // 輸出錯誤信息到控制台
             console.log(error.response);
-            return null;  // 在出错时返回 null
+
+            // 出錯時返回 null
+            return null;  
         });
     }
-    // 初始化時調用一次，以確保正確顯示初始任務數量
+
+    // 初始化時調用 getTodo 函數，以確保載入並正確顯示初始的代辦事項數量
     getTodo().then(userTodos => {
-        if (userTodos) {  // 确保数据有效
-            // renderData(userTodos);  // 将数据传递给 renderData 函数
-            todos = userTodos; // 保存到 todos 變數中
-            filterTodos('all',todos); // 初始化時展示所有待辦事項
+        // 如果數據有效
+        if (userTodos) {  
+            // 更新 todos 變數的值，以便在應用中的其他地方使用
+            todos = userTodos;
+
+            // 初始化時，展示所有的待辦事項
+            filterTodos('all', todos); 
         }
     });
 
-    // document.querySelector('.nav-tabs .Category').textContent = '全部';
-    let isAnimating = false;
+
+    
 
     // 新增待辦事項
     initializeAddTodo();
@@ -91,15 +104,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // 刪除待辦事項
     initializeDeleteTodo();
 
-    // 清除所有已完成的任務
-    // initializeClearCompleted();
 
-    // 初始化時調用一次，以確保正確顯示初始任務數量
-    // renderData();
-
-
-    // 登出
+    /**
+     * 登出用戶並更新UI。
+     */
     document.querySelector('.signOut').addEventListener('click', function() {
+        // 顯示一個彈出視窗（SweetAlert2），詢問用戶是否真的要登出
         Swal.fire({
             title: '您確定要登出嗎？',
             text: "您可以在任何時候重新登入！",
@@ -110,12 +120,15 @@ document.addEventListener('DOMContentLoaded', function() {
             confirmButtonText: '是的，登出！',
             cancelButtonText: '取消'
         }).then((result) => {
-            // 如果用戶點擊了「是的，登出！」按鈕
+            // 如果用戶確認要登出
             if (result.isConfirmed) {
-                // 呼叫 signOut 函數，並在成功登出後處理用戶的UI更新
+                // 調用 signOut 函數
                 signOut().then(response => {
+                    // 檢查響應狀態碼是否為200（成功）
                     if(response.status === 200) { 
+                        // 從 localStorage 移除 token
                         localStorage.removeItem('token');
+                        // 通知用戶已成功登出並導向登入頁面
                         Swal.fire(
                             '已登出！',
                             '您已成功登出。',
@@ -125,6 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         });
                     }
                 }).catch(error => {
+                    // 如果在登出過程中出現錯誤，將錯誤信息打印到控制台並通知用戶
                     console.error('登出過程中發生錯誤', error);
                     Swal.fire(
                         '錯誤！',
@@ -135,9 +149,15 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    
+
+    /**
+     * 發送一個登出請求到伺服器。
+     * @returns {Promise} 返回 axios 請求的承諾。
+     */
     function signOut() {
+
         const token = localStorage.getItem('token'); 
+        // 發送一個 DELETE 請求到服務器的登出端點，並在請求標頭中包含 token
         return axios.delete(`${apiUrl}/users/sign_out`, {
             headers: {
                 'Authorization': token
@@ -146,28 +166,37 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
-    let navTodos = document.querySelectorAll('.navTodo');  // 選擇所有的 .navTodo 按鈕
-
+    // 獲取所有.navTodo 狀態按鈕
+    let navTodos = document.querySelectorAll('.navTodo');
+    // 添加事件監聽器給每個按鈕
     navTodos.forEach(button => {
         button.addEventListener('click', function() {
-            // 在這裡獲取 data-filter 屬性值，並將其作為參數傳遞給 filterTodos 函數
+            // 獲取按鈕的data-filter屬性值並將其作為過濾類型參數
             let type = this.getAttribute('data-filter');
-            filterTodos(type, todos);  // 假設 todos 是一個已定義並包含待辦事項的變量
 
-            // 移除所有按钮的 active 类
+            // 調用過濾待辦事項函數
+            filterTodos(type, todos);
+
+            // 移除所有按鈕的'active'類
             navTodos.forEach(btn => {
                 btn.classList.remove('active');
             });
 
-            // 给被点击的按钮添加 active 类
+            // 為被點擊的按鈕添加'active'類
             this.classList.add('active');
         });
     });
-    // 過濾待辦事項的函數
-    function filterTodos(type,todos) {
+
+    /**
+     * 過濾待辦事項並更新UI
+     * @param {string} type 過濾類型：'all' | 'completed' | 'uncompleted'
+     * @param {Array} todos 待辦事項數組
+     */
+    function filterTodos(type, todos) {
         let filteredTodos;
-        currentFilter = type;  // 更新当前的过滤状态
+        currentFilter = type;  // 更新當前過濾狀態
         
+        // 根據過濾類型確定要顯示的待辦事項
         switch(type) {
             case 'all':
                 filteredTodos = todos;
@@ -180,46 +209,52 @@ document.addEventListener('DOMContentLoaded', function() {
                 break;
         }
         
-        renderData(filteredTodos);// 已经将过滤后的待办事项传递给 renderData 函数
-        // 你可能還需要更新待辦事項數量的 badge
+        // 渲染過濾後的待辦事項並更新badge
+        renderData(filteredTodos);
         updateTodoBadges(todos);
     }
+
+    /**
+     * 更新待辦事項的badge值
+     * @param {Array} todos 待辦事項數組
+     */
     function updateTodoBadges(todos) {
+        // 更新每個類別待辦事項的數量
         document.querySelector('.allBadge').textContent = `+${todos.length}`;
         document.querySelector('.doneBadge').textContent = `+${todos.filter(todo => todo.completed_at !== null).length}`;
         document.querySelector('.undoneBadge').textContent = `+${todos.filter(todo => todo.completed_at === null).length}`;
     }
-    
 
 
-
-    // 初始化添加待办事项的功能
+    // 初始化添加待辦事項的功能
     function initializeAddTodo() {
-        // 为添加按钮添加点击事件监听器
+        // 為添加按鈕添加點擊事件監聽器
         addButton.addEventListener('click', handleAddTodo);
 
-        // 监听输入框的 Enter 键事件
+        // 監聽輸入框的 Enter 鍵事件
         newitem.addEventListener('keypress', function(e) {
+            // 如果按下的是Enter鍵，則呼叫 handleAddTodo
             if (e.key === 'Enter') {
                 handleAddTodo();
             }
         });
 
         function handleAddTodo() {
+            // 檢查輸入框是否為空
             if (newitem.value === "") {
-                alert("请输入内容");
+                alert("請輸入內容");
                 return;
             }
-
+            // 創建新的待辦事項對象並清空輸入框
             const newTodo = { content: newitem.value, completed: false };
-            newitem.value = '';  // 清空输入框
-
-            addTodoToServer(newTodo);  // 将新代办事项发送到服务器
+            newitem.value = '';
+            // 將新的待辦事項發送到伺服器
+            addTodoToServer(newTodo);
         }
 
         function addTodoToServer(newTodo) {
-            const token = localStorage.getItem('token');  // 获取 token
-        
+            const token = localStorage.getItem('token');
+            // 使用 axios 發送 POST 請求以添加新的待辦事項
             axios.post(`${apiUrl}/todos`, {
                 todo: newTodo
             }, {
@@ -228,255 +263,216 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             })
             .then(response => {
-                console.log(response)
+                // 在控制台打印伺服器響應
+                console.log(response);
+
+                // 獲取更新後的待辦事項列表
                 getTodo().then(userTodos => {
-                    if (userTodos) {  // 确保数据有效
-                        todos = userTodos;  // <<< 更新全局 todos 变量
-                        renderData(userTodos);  // 将数据传递给 renderData 函数
-                        updateTodoBadges(todos); // 更新徽章
-                        filterTodos(currentFilter, todos);  // 确保在更新状态后重新过滤待办事项
+                    // 確保數據有效
+                    if (userTodos) {
+                        todos = userTodos;  // 更新全局變量 todos
+                        // 更新 UI
+                        renderData(userTodos);
+                        updateTodoBadges(todos);
+                        filterTodos(currentFilter, todos); // 重新過濾並渲染待辦事項列表
                     }
                 });
             })
+            // 在控制台打印任何錯誤的響應
             .catch(error => console.log(error.response));
         }
     }
 
-
     // 初始化刪除待辦事項的功能
     function initializeDeleteTodo() {
+        // 監聽清單群組的點擊事件
         listGroup.addEventListener('click', function(e) {
             const target = e.target;
+            // 確認點擊的元素或其子元素是否有 .trash 類別
             if (target.matches('.trash, .trash *')) {
                 e.preventDefault();
                 const listItem = target.closest('.list-group-item');
-                const todoId = listItem.dataset.todoId;  // 获取待办事项的id
-    
+                const todoId = listItem.dataset.todoId; // 獲取待辦事項的 id
+
+                // 添加動畫效果
                 listItem.classList.add('animate__animated', 'animate__headShake');
                 setTimeout(() => {
                     listItem.classList.remove('animate__headShake');
                     listItem.classList.add('animate__fadeOutLeft');
                 }, 400);
                 setTimeout(() => {
-                    deleteTodoFromServer(listItem, todoId);  // 将id传递给後端 api
+                    // 在動畫結束後刪除待辦事項
+                    deleteTodoFromServer(listItem, todoId);
                 }, 1500);
             }
         });
 
-        // 将待办事项的id传递给服务器，並且從 DOM 中移除元素
+        // 將待辦事項的 id 傳遞給伺服器，並從 DOM 中移除元素
         function deleteTodoFromServer(listItem, todoId) {
-            const token = localStorage.getItem('token');  // 获取 token
-        
+            const token = localStorage.getItem('token');
+            
+            // 使用 axios 向伺服器發送 DELETE 請求以刪除待辦事項
             axios.delete(`${apiUrl}/todos/${todoId}`, {
                 headers: {
-                    'Authorization': token  // 将 token 添加到请求头中
+                    'Authorization': token
                 }
             })
             .then(response => {
-                console.log(response)
-                listItem.remove()  // 从 DOM 中移除 listItem
+                console.log(response);
+                listItem.remove(); // 從 DOM 中移除 listItem
+                // 更新待辦事項列表和 UI
                 getTodo().then(userTodos => {
                     if (userTodos) {
-                        todos = userTodos;  // 更新全局 todos 变量
-                        renderData(todos);  // 重新渲染 UI
+                        todos = userTodos; // 更新全局變數 todos
+                        // 更新 UI
+                        renderData(todos);
                         updateTodoBadges(todos); // 更新徽章
-                        filterTodos(currentFilter, todos);  // 确保在更新状态后重新过滤待办事项
+                        filterTodos(currentFilter, todos); // 重新過濾並渲染待辦事項列表
                     }
                 });
             })
             .catch(error => console.log(error.response));
         }
     }
-    
 
-    // 清除所有已完成的任務
-    function initializeClearCompleted() {
-        // 初始化clearButton的顏色
-        clearButton.style.color = "gray";
-        // 點擊勾選匡時 更新clearButton的顏色
-        listGroup.addEventListener('click', function() {
-            const completedItems = Array.from(listGroup.children).filter(listItem =>
-                listItem.querySelector('input').checked
-            );
-            clearButton.style.color = completedItems.length === 0 ? "gray" : "#D15628";
-        });
-        // 清除所有已完成的任務
-        clearButton.addEventListener('click', function(e) {
-            e.preventDefault();  // 防止默認行為
-            toggleButtons(true);  // 暫時禁止其他按鈕功能 因為有動畫要執行了
-            const completedItems = Array.from(listGroup.children).filter(
-                listItem => listItem.querySelector('.form-check-input').checked
-            ); // 找已勾選的項目
-            if (completedItems.length === 0) return;  // 如果沒有已完成的項目，則返回
-            completedItems.forEach(listItem => {  // 為每個已完成的項目添加動畫類
-                listItem.classList.add('animate__animated', 'animate__flash');
-            });
-            setTimeout(() => {  // 設置一個定時器
-                completedItems.forEach(listItem => {
-                    listItem.classList.remove('animate__flash');  // 移除動畫類
-                    listItem.classList.add('animate__zoomOutUp');  // 添加動畫類
-                });
-            }, 1000);
-            setTimeout(() => {  // 設置一個定時器
-                isAnimating = false;  // 設置isAnimating為false
-                toggleButtons(false);  // 切換按鈕
-                data.forEach(category => {  // 為數據的每個類別移除已完成的項目
-                    category.todos = category.todos.filter(todo => !todo.completed);
-                });
-                renderData();  // 渲染數據
-            }, 2300); // 1s for 第一個動畫 + 1.5s for 第二個動畫
-        });
-    }
-
-
-    // 渲染数据到 HTML
+    // 渲染數據到 HTML
     function renderData(userTodos) {
-        // 檢查是否有動畫正在運行
-        if (isAnimating) return;
-        // 清除當前列表
+        
+        if (isAnimating) return; // 若動畫正在運行，則不進行渲染
+        // 清空當前列表
         listGroup.innerHTML = '';
+        // 複製一份待辦事項數據以進行排序和過濾
+        let sortedData = [...userTodos]; 
 
-        // 根据传递的 todos 数据更新排序和过滤逻辑
-        let sortedData = [...userTodos]; // 拷貝新的數組
-
-        // 將整理好的資料渲染在畫面上
-        sortedData.forEach((item, index) => {
-            const listItem = document.createElement('li');
-            listItem.className = 'list-group-item py-3 px-4 mb-1 d-flex';
-            listItem.dataset.todoId = item.id;  // 取得每个待办事项的唯一id
-            listItem.innerHTML = `
-                <div class="overflow-auto me-auto">
-                    <span class="task-name px-2 text-nowrap text-break ${item.completed_at ? 'striked' : ''}">${item.content}</span>
-                </div>
-                <div class="actions text-nowrap ms-3">
-                    <input class="form-check-input me-3" type="checkbox" aria-label="..." ${item.completed_at ? 'checked' : ''}>
-                    <a href="#" class="trash">
-                        <i class="fas fa-trash"></i>
-                    </a>
-                </div>
-            `;
-            
-
-            // 編輯代辦式樣內容
-            const taskNameDiv = listItem.querySelector('.task-name');
-            taskNameDiv.setAttribute('contenteditable', 'true'); //有属性，用户才能编辑它。
-            initializeEditableTask(taskNameDiv, item, item.id);
-            
-
-            // 监听 checkbox 的变化
-            const checkbox = listItem.querySelector('.form-check-input');
-            initializeToggleTodo(checkbox, item, item.id);  // 假設 item.id 是 todoId
+        // 遍歷數據，渲染到 UI 上
+        sortedData.forEach((item) => {
+            const listItem = createTodoItemElement(item); // 創建待辦事項元素
             listGroup.appendChild(listItem);
         });
-        // updatePendingCount(); // 更新待完成任务数量
     }
 
-    // 編輯代辦 內容在 renderData 被調用
+    // 創建待辦事項元素
+    function createTodoItemElement(item) {
+        const listItem = document.createElement('li');
+        listItem.className = 'list-group-item py-3 px-4 mb-1 d-flex';
+        listItem.dataset.todoId = item.id; 
+        listItem.innerHTML = createTodoItemTemplate(item); // 創建待辦事項的 HTML 模板
+
+        const taskNameDiv = listItem.querySelector('.task-name');
+        taskNameDiv.setAttribute('contenteditable', 'true');
+        initializeEditableTask(taskNameDiv, item, item.id); // 初始化編輯待辦事項的功能
+
+        const checkbox = listItem.querySelector('.form-check-input');
+        initializeToggleTodo(checkbox, item, item.id); // 更新完成＆已完成切換
+
+        return listItem;
+    }
+
+    // 創建待辦事項的 HTML 模板
+    function createTodoItemTemplate(item) {
+        return `
+            <div class="overflow-auto me-auto">
+                <span class="task-name px-2 text-nowrap text-break ${item.completed_at ? 'striked' : ''}">
+                    ${item.content}
+                </span>
+            </div>
+            <div class="actions text-nowrap ms-3">
+                <input class="form-check-input me-3" type="checkbox" aria-label="..." ${item.completed_at ? 'checked' : ''}>
+                <a href="#" class="trash">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </div>
+        `;
+    }
+
+    // 初始化編輯待辦事項的功能
     function initializeEditableTask(taskElement, item, todoId) {
-        taskElement.addEventListener('blur', function() {
-            saveEdit();
-        });
-    
-        taskElement.addEventListener('keypress', function(e) {
+        taskElement.addEventListener('blur', () => saveEdit());
+        taskElement.addEventListener('keypress', (e) => handleKeyPress(e));
+
+        function handleKeyPress(e) {
             if (e.key === 'Enter') {
-                e.preventDefault();  // 防止 Enter 键的默认行为（例如，提交表单）
-                taskElement.blur();  // 触发 blur 事件来保存编辑
+                e.preventDefault();
+                taskElement.blur();
             }
-        });
-        // 編輯保存
+        }
+
         function saveEdit() {
             const updatedContent = taskElement.textContent;
             if (item.content !== updatedContent) {
                 item.content = updatedContent;
-                // 发送更新到后端 API
                 updateTodo(updatedContent, todoId);
             }
         }
-    
-        function updateTodo(updatedContent,todoId){
-            const token = localStorage.getItem('token');  // 从 localStorage 获取 token
-    
-            axios.put(`${apiUrl}/todos/${todoId}`,{
+    }
+
+    // 更新待辦事項內容至伺服器
+    function updateTodo(updatedContent, todoId) {
+        const token = localStorage.getItem('token');
+        axios.put(`${apiUrl}/todos/${todoId}`, {
                 "todo": {
                     "content": updatedContent
                 }
-            },{
-            headers: {
-                'Authorization': token  // 将 token 添加到请求头中
-            }
-        })
-            .then(response=>console.log(response))
-            .catch(error=>console.log(error.response))
-        }
+            }, {
+                headers: {
+                    'Authorization': token  
+                }
+            })
+            .then(response => console.log(response))
+            .catch(error => console.log(error.response));
     }
-    
-    // 更新完成＆已完成切換
+
+    // 初始化待辦事項的完成與未完成狀態切換的功能
     function initializeToggleTodo(checkbox, item, todoId) {
         checkbox.addEventListener('change', function () {
-            const isCompleted = checkbox.checked;
+            const isCompleted = checkbox.checked; // 取得 checkbox 的選中狀態
             // 更新待辦事項的完成狀態
-            updateTodoStatus(todoId, isCompleted) // 通過API向服務器更新待辦事項的完成狀態
+            updateTodoStatus(todoId, isCompleted) 
                 .then(() => {
-                    // 更新待辦事項的完成時間
+                    // 根據完成狀態，設定或取消待辦事項的完成時間
                     item.completed_at = isCompleted ? new Date().toISOString() : null;
-                    // 更新用戶界面
-                    updateUI(item, checkbox); // 更新用戶界面以反映待辦事項的新狀態
-                    filterTodos(currentFilter, todos);  // 确保在更新状态后重新过滤待办事项
-                    updateTodoBadges(todos);  // 确保在更新状态后更新徽章
+                    // 更新用戶界面來反映新的待辦事項狀態
+                    updateUI(item, checkbox);
+                    filterTodos(currentFilter, todos);// 確保在更新狀態後重新過濾待辦事項列表
+                    updateTodoBadges(todos);// 確保在更新狀態後更新徽章
                 })
-                .catch(error => console.log(error));  // 處理任何錯誤
+                .catch(error => console.log(error));
         });
     }
-    // 通過API向服務器更新待辦事項的完成狀態
+
+    // 通過 API 向伺服器更新待辦事項的完成狀態
     function updateTodoStatus(todoId, isCompleted) {
-        const token = localStorage.getItem('token');  // 從 localStorage 獲取 token
+        // 從 localStorage 中取得 token
+        const token = localStorage.getItem('token');
+        // 建立一個物件來存放更新的狀態
         const statusUpdate = {
             todo: {
                 completed: isCompleted
             }
         };
 
+        // 發送 patch 請求以更新待辦事項的狀態
         return axios.patch(`${apiUrl}/todos/${todoId}/toggle`, statusUpdate, {
             headers: {
-                'Authorization': token  // 將 token 添加到請求頭中
+                'Authorization': token  // 添加 token 至請求頭
             }
         });
     }
 
-    // 更新用户界面以反映待办事项的新状态。只更新被改变的待办项目，较好的效能、代码结构、用户体验。
+    // 更新 UI 以反映待辦事項的新狀態
     function updateUI(item, checkbox) {
+        // 從 checkbox 找到最接近的待辦事項項目元素
         const listItem = checkbox.closest('.list-group-item');
+        // 選擇待辦事項名稱的元素
         const taskName = listItem.querySelector('.task-name');
+        // 根據待辦事項的完成時間，設定或移除相應的 CSS 類別
         if(item.completed_at !== null) {
             taskName.classList.add('striked');
-            if(taskName.classList.contains('unstriked')) {
-                taskName.classList.remove('unstriked');
-            }
-        } else if(taskName.classList.contains('striked')) {
+            taskName.classList.remove('unstriked');
+        } else {
             taskName.classList.add('unstriked');
             taskName.classList.remove('striked');
         }
-        // 如果后期需要，可以在这里调用 renderData 以重新排序和重新渲染列表
-        // renderData(userTodos);
     }
 
-    
-    // 更新待完成任务数量
-    function updatePendingCount() {
-
-
-    }
-
-    // 檢查畫面是否有動畫正在執行
-    function toggleButtons(disabled) {
-        addButton.disabled = disabled;
-        sortCheckbox.disabled = disabled;
-        clearButton.disabled = disabled;
-        document.querySelectorAll('.form-check-input').forEach(function(checkbox) {
-            checkbox.disabled = disabled;
-        });
-        document.querySelectorAll('.trash').forEach(function(trash) {
-            trash.style.pointerEvents = disabled ? 'none' : 'auto';
-        });
-    }
 });

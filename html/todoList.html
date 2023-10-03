@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    <link rel="stylesheet" href="../sass/all.css">
+    <link rel="stylesheet" href="../css/all.css">
     <title>todo list</title>
 </head>
 
@@ -41,11 +41,8 @@
                             <span class="fs-6 text-nowrap">Get things done, one item at a time.</span>
                         </div>
                     </div>
-                    <!-- 清除已完成項目 ＆ 登出 -->
+                    <!-- 登出 -->
                     <div class="col-4 text-end text-nowrap">
-                        <button class="clear btn" type="submit">
-                            <i class="fas fa-calendar-times fs-3"></i>
-                        </button>
                         <button class="btn signOut">
                             <i class="fas fa-user-alt fs-3"></i>
                         </button>
@@ -59,15 +56,15 @@
                         <nav class="col-12 card-nav nav nav-pills nav-fill flex-nowrap pe-0 w-100">
                             <button class="navTodo px-1 nav-link text-nowrap active position-relative" data-filter="all">
                                 全部
-                                <span class="allBadge badge translate-middle rounded-pill bg-danger">+12</span>
+                                <span class="allBadge badge translate-middle rounded-pill bg-danger">+0</span>
                             </button>
                             <button class="navTodo px-1 nav-link text-nowrap position-relative" data-filter="completed">
                                 已完成
-                                <span class="doneBadge badge translate-middle rounded-pill bg-danger">+12</span>
+                                <span class="doneBadge badge translate-middle rounded-pill bg-danger">+0</span>
                             </button>
                             <button class="navTodo px-1 nav-link text-nowrap position-relative" data-filter="uncompleted">
                                 未完成
-                                <span class="undoneBadge badge translate-middle rounded-pill bg-danger">+12</span>
+                                <span class="undoneBadge badge translate-middle rounded-pill bg-danger">+0</span>
                             </button>
                         </nav>
                     </div>
