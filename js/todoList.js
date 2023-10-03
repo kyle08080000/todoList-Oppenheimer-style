@@ -30,7 +30,7 @@ function WelcomeMessage(username) {
     
     if (toastBody) {
         toastBody.textContent = `歡迎加入, ${username}！`;
-        // 在這裡你可能還想要顯示 toast，如果它不是自動顯示的
+
         var toastEl = document.getElementById('welcomeToast');
         var toast = new bootstrap.Toast(toastEl);
         toast.show();
