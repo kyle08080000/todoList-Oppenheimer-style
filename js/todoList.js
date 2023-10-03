@@ -241,7 +241,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         function handleAddTodo() {
             // 檢查輸入框是否為空
-            if (newitem.value === "") {
+            if (newitem.value.trim()  === "") {
                 alert("請輸入內容");
                 return;
             }
