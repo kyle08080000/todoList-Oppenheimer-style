@@ -234,6 +234,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         todos = userTodos;  // <<< 更新全局 todos 变量
                         renderData(userTodos);  // 将数据传递给 renderData 函数
                         updateTodoBadges(todos); // 更新徽章
+                        filterTodos(currentFilter, todos);  // 确保在更新状态后重新过滤待办事项
                     }
                 });
             })
@@ -279,6 +280,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         todos = userTodos;  // 更新全局 todos 变量
                         renderData(todos);  // 重新渲染 UI
                         updateTodoBadges(todos); // 更新徽章
+                        filterTodos(currentFilter, todos);  // 确保在更新状态后重新过滤待办事项
                     }
                 });
             })
